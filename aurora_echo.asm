@@ -1,36 +1,38 @@
-[org 0x7C00]
-bits 16
+[bits 16]
+[section .text]
+global _start
 
-start:
-    ; Print welcome message
-    mov si, message
-    call print_string
-
-main_loop:
-    ; Wait for key press
-    mov ah, 0x00
-    int 0x16        ; BIOS keyboard interrupt
-
-    ; Echo the key to the screen
-    mov ah, 0x0E
-    int 0x10        ; BIOS teletype output
-
-    jmp main_loop   ; keep looping
-
-; -------------------------
-; Print string routine
-print_string:
-    mov ah, 0x0E
-.next:
-    lodsb
-    cmp al, 0
-    je .done
+_start:
+    mov ax, 0x0013
     int 0x10
-    jmp .next
-.done:
-    ret
 
-message db 'Aurora OS v0.2 - Type something: ', 0
+    cli
+    lgdt [gdt_descriptor]
+    mov eax, cr0
+    or eax, 0x1
+    mov cr0, eax
+    jmp 0x08:init_pm
+
+[bits 32]
+init_pm:
+    mov ax, 0x10
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    ; Jump to the Kernel at 0x8000
+    extern kernel_main
+    call 0x8000
+    jmp $
+
+gdt_start: dq 0x0
+gdt_code:  dw 0xffff, 0x0, 10011010b, 11001111b, 0x0
+gdt_data:  dw 0xffff, 0x0, 10010010b, 11001111b, 0x0
+gdt_end:
+gdt_descriptor: dw gdt_end - gdt_start - 1
+                dd gdt_start
 
 times 510-($-$$) db 0
-dw 0xAA55
+dw 0xaa55
