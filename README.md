@@ -44,3 +44,17 @@ qemu-system-i386 -drive format=raw,file=aurora.img
 * `kernel.c` - Main entry point and event handling system.
 * `vga.c` - Video graphics array pixel mapping and cursor rendering functions.
 * `mouse.c` - PS/2 mouse port I/O communication and driver logic.
+## 📅 Evolution of Aurora OS
+
+### 🔹 Version 0.1 - The Foundation (Current)
+* **Milestone:** Successful transition from 16-bit Real Mode to 32-bit Protected Mode.
+* **Features:** Monolithic kernel handoff, VGA Mode 13h (320x200) linear frame buffer, and raw PS/2 keyboard/mouse interrupt handling.
+* **Status:** Blocky UI with basic cursor rendering and keyboard streams active.
+
+![Aurora OS v0.1 Demo](aurora.gif)
+
+---
+
+### 🔹 Version 0.2 - Graphics Pipeline Overhaul (Planned)
+* **Goal:** High-resolution display interface without breaking `boot.asm`.
+* **Targets:** Custom font rasterization, anti-aliased primitive drawing, and double-buffered window compositing to eliminate the cursor trail.
