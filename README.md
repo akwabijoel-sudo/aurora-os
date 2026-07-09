@@ -55,6 +55,4 @@ qemu-system-i386 -drive format=raw,file=aurora.img
 
 ---
 
-### 🔹 Version 0.2 - Graphics Pipeline Overhaul (Planned)
-* **Goal:** High-resolution display interface without breaking `boot.asm`.
-* **Targets:** Custom font rasterization, anti-aliased primitive drawing, and double-buffered window compositing to eliminate the cursor trail.
+### 🔹 Version 0.2 - Implementing a fat32 driver in order to read files
